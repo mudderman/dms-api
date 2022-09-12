@@ -1,0 +1,19 @@
+# Server
+server:
+  servlet:
+    context-path: /dms
+  shutdown: graceful
+
+# Logging
+logging:
+  level:
+    so.hau.dmsapi: INFO
+    org.springframework: ERROR
+    org.apache.tomcat: ERROR
+    org.apache.catalina: ERROR
+  pattern:
+    console: "[ %d ][ %-5level ] %msg%n"
+
+# Application specific parameters
+application:
+  import-limit: 5

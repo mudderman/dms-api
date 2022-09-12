@@ -4,8 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DmsApiApplication {
+public class DmsApiBoot {
     public static void main(String[] args) {
-        SpringApplication.run(DmsApiApplication.class, args);
+        SpringApplication app = new SpringApplication(DmsApiBoot.class);
+        app.run(args);
     }
 }

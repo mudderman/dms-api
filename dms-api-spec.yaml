@@ -1,0 +1,93 @@
+swagger: "2.0"
+info:
+  title: Document Management System API
+  version: 1.0.0
+  contact:
+    email: tomas@hau.so
+basePath: /dms
+schemes:
+  - http
+paths:
+  /import:
+    post:
+      summary: Import a new document
+      description: Start the import of a new document into the Document Management System.
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: documentName
+          type: string
+          description: The name of the document to display in the system
+        - in: formData
+          name: file
+          type: file
+          description: The document to import into DMS
+      responses:
+        "200":
+          description: The import of the document is started/created
+          schema:
+            $ref: "#/definitions/DocumentOperation"
+        "400":
+          description: If the uploaded data isn't properly structured.
+          schema:
+            $ref: "#/definitions/SpringError"
+        "500":
+          description: If an unexpected error occurs while processing the request.
+          schema:
+            $ref: "#/definitions/SpringError"
+  /status/{operationId}:
+    get:
+      summary: Get the status of an operation.
+      description: Get the status of a document import operation.
+      produces:
+        - application/json
+      parameters:
+        - name: operationId
+          in: path
+          description: The id of the operation to find
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Retrieves the status of an operation
+          schema:
+            $ref: "#/definitions/DocumentOperation"
+        "400":
+          description: If the operation could not be found
+definitions:
+  DocumentOperation:
+    type: object
+    properties:
+      status:
+        type: string
+        description: "Status of the operation. Possible values: started, pending, completed"
+      operationId:
+        type: string
+        format: GUID
+        description: "The unique identifier of the operation"
+      message:
+        type: string
+        description: "A descriptive message of the operation status."
+      createdTimestamp:
+        type: string
+        format: timestamp
+        description: "UNIX timestamp when the operation was created"
+  SpringError:
+    type: object
+    description: Default Spring error response
+    properties:
+      timestamp:
+        type: string
+        description: Time and date of the error
+      status:
+        type: integer
+        description: Https status code
+      error:
+        type: string
+        description: Type of error that occurred or a detailed error message.
+      path:
+        type: string
+        description: Relative path of the request that produced the error
